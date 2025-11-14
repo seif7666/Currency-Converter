@@ -2,7 +2,13 @@ package com.curr_convert.currency_converter.service;
 
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +25,8 @@ public class UserService implements UserDetailsService {
     
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private ApplicationContext context;
 
     public UserService(){
         System.out.println("Called!");
@@ -50,6 +58,12 @@ public class UserService implements UserDetailsService {
         userPrinciple.setPassword(password);
         this.userRepo.save(userPrinciple);
         return true;
+    }
+    public boolean login(String username, String password) {
+        AuthenticationProvider provider= this.context.getBean(AuthenticationProvider.class);
+        Authentication authentication= new UsernamePasswordAuthenticationToken(username, password);   
+        authentication=provider.authenticate(authentication);
+        return authentication.isAuthenticated();
     }
 
 

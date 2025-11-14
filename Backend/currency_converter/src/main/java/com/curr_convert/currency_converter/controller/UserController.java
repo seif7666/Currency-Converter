@@ -29,13 +29,12 @@ public class UserController {
         
     }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<String> registerUser(UserPrinciple user){
-    //     if(userService.login(user))
-    //         return new ResponseEntity<>("User Created!",HttpStatus.CREATED);
-    //     return new ResponseEntity<>("User Exists!",HttpStatus.BAD_REQUEST);
-        
-    // }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserCredentials user){
+        if(userService.login(user.username(), user.password()))
+            return new ResponseEntity<>("Success!",HttpStatus.OK);
+        return new ResponseEntity<>("Invalid Username or Password",HttpStatus.UNAUTHORIZED);    
+    }
 
 }
 
