@@ -52,13 +52,13 @@ public class UserService implements UserDetailsService {
     }
     
     
-    public UserDetails loadUserByJWT(String jwt) throws JWTExpiredException, UsernameNotFoundException {
+    public PrincipleUserDetails loadUserByJWT(String jwt) throws JWTExpiredException, UsernameNotFoundException {
         String [] splitter= jwt.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payload = new String(decoder.decode(splitter[1]));
         HashMap map=new Gson().fromJson(payload, HashMap.class);
         String userName= map.get("UserName").toString();
-        UserDetails userDetails= this.loadUserByUsername(userName);
+        PrincipleUserDetails userDetails= (PrincipleUserDetails) this.loadUserByUsername(userName);
         UserPrinciple principle= ((PrincipleUserDetails)userDetails).getUserPrinciple();
         JwtParser jwtParser = Jwts.parser()
                 .verifyWith((SecretKey) getSigningKey(principle.getPrivateKey()))

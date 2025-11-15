@@ -5,10 +5,11 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Frequents")
 @Data
 public class UserFrequents extends UserPreferences{
-    private LocalDate lastUsed;
+    private LocalDateTime lastUsed;
 }

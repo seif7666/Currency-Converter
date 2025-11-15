@@ -11,7 +11,7 @@ public class UserPreferences {
     @Id
     @GeneratedValue
     long ID;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     UserPrinciple principle;
     @Column(length = 3)
     String fromCurr;
