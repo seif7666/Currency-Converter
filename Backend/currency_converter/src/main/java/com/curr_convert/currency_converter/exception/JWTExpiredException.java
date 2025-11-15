@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class JWTExpiredException extends UsernameNotFoundException {
 
-    public JWTExpiredException(String msg) {
-        super(msg);
+    public JWTExpiredException() {
+        super("JWT token expired!");
     }
     
 }

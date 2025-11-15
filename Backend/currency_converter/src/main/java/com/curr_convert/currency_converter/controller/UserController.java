@@ -1,5 +1,6 @@
 package com.curr_convert.currency_converter.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserCredentials user){
-        if(userService.login(user.username(), user.password()))
-            return new ResponseEntity<>("Success!",HttpStatus.OK);
+    public ResponseEntity<String> login(@RequestBody UserCredentials user, HttpServletResponse response){
+        String jwt=userService.login(user.username(), user.password());
+        if(jwt != null) {
+            response.setHeader("Token",jwt);
+            return new ResponseEntity<>("Success!", HttpStatus.OK);
+        }
         return new ResponseEntity<>("Invalid Username or Password",HttpStatus.UNAUTHORIZED);    
     }
 
