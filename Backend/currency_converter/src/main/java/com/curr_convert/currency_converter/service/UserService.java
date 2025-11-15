@@ -2,7 +2,9 @@ package com.curr_convert.currency_converter.service;
 
 import java.security.Key;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 import io.jsonwebtoken.*;
@@ -40,7 +42,6 @@ public class UserService implements UserDetailsService {
     private ApplicationContext context;
 
     public UserService(){
-        System.out.println("Called!");
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,11 +57,9 @@ public class UserService implements UserDetailsService {
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payload = new String(decoder.decode(splitter[1]));
         HashMap map=new Gson().fromJson(payload, HashMap.class);
-        System.out.println(map.toString());
         String userName= map.get("UserName").toString();
         UserDetails userDetails= this.loadUserByUsername(userName);
         UserPrinciple principle= ((PrincipleUserDetails)userDetails).getUserPrinciple();
-        System.out.println(principle);
         JwtParser jwtParser = Jwts.parser()
                 .verifyWith((SecretKey) getSigningKey(principle.getPrivateKey()))
                 .build();
@@ -92,19 +91,18 @@ public class UserService implements UserDetailsService {
         String random= Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
         principle.setPrivateKey(random);
         this.userRepo.save(principle);
-        return this.generateJWT(principle, new Date());
+        return this.generateJWT(principle);
     }
 
-    private String generateJWT(UserPrinciple user, Date date){
-        Date expirationDate= new Date (System.currentTimeMillis() + 1000*3*60);
+    private String generateJWT(UserPrinciple user){
+        long expirationMillis = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1);
+        Date expirationDate = new Date(expirationMillis);
         Key key= this.getSigningKey(user.getPrivateKey());
-        String jws = Jwts.builder()
+        return Jwts.builder()
                 .claim("UserName", user.getUsername())
-                .issuedAt(date)
                 .expiration(expirationDate)
                 .signWith(key)
                 .compact();
-        return jws;
     }
 
     private Key getSigningKey(String key) {

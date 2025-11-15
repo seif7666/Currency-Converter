@@ -1,28 +1,38 @@
 package com.curr_convert.currency_converter.model;
 
 import jakarta.annotation.Generated;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-@ToString
 public class UserPrinciple {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    long ID;
+    private long ID;
     @Column(unique = true)
-    String username;
-    String password;
-    String privateKey;
+    private String username;
+    private String password;
+    private String privateKey;
+    @OneToMany(mappedBy = "principle", fetch = FetchType.LAZY)
+    private List<UserFrequents> userFrequentsList;
+    @OneToMany(mappedBy = "principle" , fetch = FetchType.LAZY)
+    private List<UserPreferences> userPreferencesList;
+
+    @Override
+    public String toString() {
+        return "UserPrinciple{" +
+                "privateKey='" + privateKey + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", ID=" + ID +
+                '}';
+    }
 }
