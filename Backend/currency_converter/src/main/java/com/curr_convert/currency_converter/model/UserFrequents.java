@@ -4,6 +4,7 @@ import com.curr_convert.currency_converter.dto.CurrencyPair;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Frequents")
 @Data
+@NoArgsConstructor
 public class UserFrequents extends UserPreferences{
     private LocalDateTime lastUsed;
 
