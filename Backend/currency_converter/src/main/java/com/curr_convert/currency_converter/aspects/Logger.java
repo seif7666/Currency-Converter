@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class Logger {
     org.slf4j.Logger logger= LoggerFactory.getLogger(Logger.class);
-    @Before("execution(* com.curr_convert.currency_converter..*.*(..))")
+//    @Before("execution(* com.curr_convert.currency_converter..*.*(..))")
     public void printLogsBefore(JoinPoint joinPoint){
         logger.info("Calling method {}", joinPoint.getSignature().getName());
     }
 
-    @After("execution(* com.curr_convert.currency_converter..*.*(..))")
+//    @After("execution(* com.curr_convert.currency_converter..*.*(..))")
     public void printLogsAfter(JoinPoint joinPoint){
         logger.info("Mathod "+ joinPoint.getSignature().getName()+ " Executed!");
     }

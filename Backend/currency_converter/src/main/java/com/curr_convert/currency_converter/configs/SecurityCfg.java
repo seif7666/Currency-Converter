@@ -1,6 +1,7 @@
 package com.curr_convert.currency_converter.configs;
 
 import jakarta.servlet.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,21 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
-@EnableAspectJAutoProxy
 public class SecurityCfg {
- 
+
+    @Autowired
+    JWTFilter  jwtFilter;
+
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider provider, @Qualifier("jwt")Filter jwtFilter) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider provider) throws Exception{
         http
         .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -32,7 +39,7 @@ public class SecurityCfg {
             .anyRequest().authenticated()
             )
             .authenticationProvider(provider)
-             .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
+                .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

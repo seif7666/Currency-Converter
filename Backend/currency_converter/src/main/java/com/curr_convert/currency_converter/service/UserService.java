@@ -81,6 +81,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
     public String login(String username, String password) {
+        System.out.println("Called!");
         AuthenticationProvider provider= this.context.getBean(AuthenticationProvider.class);
         Authentication authentication= new UsernamePasswordAuthenticationToken(username, password);   
         authentication=provider.authenticate(authentication);
