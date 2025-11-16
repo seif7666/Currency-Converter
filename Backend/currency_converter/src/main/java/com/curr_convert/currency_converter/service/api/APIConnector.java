@@ -17,10 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Data
@@ -80,14 +77,12 @@ public  class APIConnector {
                 return null;
             }
             String jsonResponse= getResponseBody();
-            Map response=new Gson().fromJson(jsonResponse,Map.class);
+            Map<String,Object> response=new Gson().fromJson(jsonResponse,Map.class);
             if(response.get("success").toString().equals("true")) {
-                System.out.println((response.get("symbols")));
-                response = (Map) response.get("symbols");
-                System.out.println(response);
+                response = (Map<String,Object>) response.get("symbols");
                 List<String> currencyList= new ArrayList<>();
-                for(Object curr : response.keySet())
-                    currencyList.add(curr.toString());
+                for(String curr : response.keySet())
+                    currencyList.add(curr);
                 return currencyList;
             }
             this.con.disconnect();
@@ -116,4 +111,7 @@ public  class APIConnector {
         return null;
     }
 
+    public double getRate() {
+        return new Random().nextDouble();
+    }
 }
