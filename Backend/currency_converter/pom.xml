@@ -97,6 +97,12 @@
             <artifactId>jedis</artifactId>
             <version>7.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.9.0</version>
+        </dependency>
 
     </dependencies>
 

@@ -1,0 +1,28 @@
+## Copy this file to `application.properties` and fill in your own values.
+## `*.properties` is git-ignored, so your real configuration never gets committed.
+
+spring.application.name=currency_converter
+
+## --- External exchange-rate provider ---------------------------------------
+## The base URL is concatenated directly with the endpoint name, so keep the
+## trailing slash. Any provider exposing a `symbols` endpoint will do; the
+## project was built against exchangeratesapi.io.
+currency.api.url=https://api.exchangeratesapi.io/v1/
+currency.api.api_key=YOUR_API_KEY_HERE
+
+## --- MySQL -----------------------------------------------------------------
+spring.datasource.url=jdbc:mysql://localhost:3306/currency_converter
+spring.datasource.username=root
+spring.datasource.password=YOUR_DB_PASSWORD_HERE
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+## --- Swagger / OpenAPI ------------------------------------------------------
+## Defaults are /swagger-ui.html and /v3/api-docs; uncomment to move them.
+#springdoc.swagger-ui.path=/swagger-ui.html
+#springdoc.api-docs.path=/v3/api-docs
+## Set to false to switch the documentation off in production.
+#springdoc.api-docs.enabled=true
+
+## Note: the Redis address is currently hard-coded to redis://localhost:6379
+## in RedisCache.java rather than read from here.
